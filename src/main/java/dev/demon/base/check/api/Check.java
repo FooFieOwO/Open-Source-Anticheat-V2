@@ -8,6 +8,8 @@ import lombok.Setter;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter
 @Setter
@@ -23,10 +25,7 @@ public abstract class Check extends Event implements Cloneable {
     private boolean enabled;
     private boolean punishable, experimental;
 
-    public Check(User user) {
-
-        this.user = user;
-
+    public Check() {
         if (getClass().isAnnotationPresent(Data.class)) {
             this.data = getClass().getAnnotation(Data.class);
 
@@ -52,6 +51,14 @@ public abstract class Check extends Event implements Cloneable {
 
     public void fail(String... data) {
 
+        if (this.user == null) return;
+
+        if (getUser().getPlayer().isOp() && Anticheat.getInstance().getConfigValues().isAllowOp()
+                || getUser().isBanned()) {
+            return;
+        }
+
+
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String s : data) {
@@ -64,9 +71,11 @@ public abstract class Check extends Event implements Cloneable {
             checkType += "*";
         }
 
-        String alert = "Anticheat >> " + this.user.getPlayer().getName() + " flagged "
-                + this.checkName + " (" + checkType + ") " +
-                "(" + this.violations + "/" + this.punishmentVL + ")";
+        String alert = Anticheat.getInstance().getConfigValues().getAlertsMessage().replace("%VL%",
+                        Double.toString(violations)).replace("%PLAYER%", getUser().getPlayer().getName())
+                .replace("%CHECK%", checkName).replace("%CHECKTYPE%", checkType).
+                replace("%MAX-VL%", Double.toString(punishmentVL))
+                .replace("%PREFIX%", Anticheat.getInstance().getConfigValues().getPrefix());
 
         TextComponent textComponent = new TextComponent(alert);
 
@@ -78,8 +87,42 @@ public abstract class Check extends Event implements Cloneable {
                 .forEach(uuidUserEntry -> uuidUserEntry.getValue().getPlayer().spigot().sendMessage(textComponent));
 
 
+        if (Anticheat.getInstance().getConfigValues().isConsoleAlerts()) {
+            Anticheat.getInstance().getServer().getConsoleSender().sendMessage(alert);
+        }
+
+        if (this.violations >= this.punishmentVL && !getUser().isBanned()
+                && this.punishable
+                && Anticheat.getInstance().getConfigValues().isPunish()) {
+            punishPlayer(getUser());
+        }
+
         if (this.punishable) {
             this.violations += 1.0;
         }
+    }
+
+    public static void punishPlayer(User user) {
+
+        if (user.isBanned()) return;
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Anticheat.getInstance().getConfigValues()
+                        .getPunishCommand()
+                        .replace("%PLAYER%", user.getPlayer().getName())
+                        .replace("%PREFIX%", Anticheat.getInstance().getConfigValues().getPrefix())
+                        .replaceFirst("/", ""));
+
+                if (Anticheat.getInstance().getConfigValues().isAnnounce()) {
+                    Bukkit.broadcastMessage(Anticheat.getInstance().getConfigValues().getAnnounceMessage()
+                            .replace("%PLAYER%", user.getPlayer().getName())
+                            .replace("%PREFIX%", Anticheat.getInstance().getConfigValues().getPrefix()));
+                }
+
+                user.setBanned(true);
+            }
+        }.runTask(Anticheat.getInstance());
     }
 }

@@ -8,6 +8,7 @@ import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.base.user.User;
 import dev.demon.util.location.CustomLocation;
+import org.bukkit.Bukkit;
 
 @Data(name = "Speed",
         checkType = CheckType.MOVEMENT,
@@ -18,17 +19,21 @@ public class SpeedA extends Check {
     private double threshold;
     private double MAX_EXPECTED = 1e-4;
 
-    public SpeedA(User user) {
-        super(user);
-    }
-
     @Override
     public void onPacket(PacketEvent event) {
         if (event.isFlying()) {
 
             WrappedInFlyingPacket packet = new WrappedInFlyingPacket(event.getPacketObject(), getUser().getPlayer());
 
-            if (!packet.isPos()) return;
+            if (!packet.isPos()
+                    || getUser().getProcessorManager().getCollisionProcessor().getLiquidTicks() > 0
+                    || getUser().getProcessorManager().getCollisionProcessor().getIceTicks() > 0
+                    || getUser().getProcessorManager().getCollisionProcessor().getSoulSandTicks() > 0
+                    || getUser().getProcessorManager().getCollisionProcessor().getSlimeTicks() > 0
+                    || getUser().generalCancel()
+                    || getUser().getProcessorManager().getActionProcessor().getLastVelocityTimer().hasNotPassed(9)
+                    || getUser().getProcessorManager().getActionProcessor()
+                    .getServerTeleportTimer().hasNotPassed(3)) return;
 
             CustomLocation to = getUser().getProcessorManager().getMovementProcessor().getTo(),
                     from = getUser().getProcessorManager().getMovementProcessor().getFrom();
@@ -86,6 +91,8 @@ public class SpeedA extends Check {
                 friction = 0.026F;
             }
 
+            double toAdd = 0;
+
             if (f >= 1.0E-4F) {
                 f = (float) Math.sqrt(f);
                 if (f < 1.0F) {
@@ -99,8 +106,12 @@ public class SpeedA extends Check {
                 float motionXAdd = (strafe * f2 - forward * f1);
                 float motionZAdd = (forward * f2 + strafe * f1);
 
-                prediction = Math.hypot(motionXAdd, motionZAdd);
+                toAdd = Math.hypot(motionXAdd, motionZAdd);
             }
+
+            if (toAdd == 0) return;
+
+            prediction += toAdd;
 
             double total = deltaXZ - prediction;
 
@@ -110,7 +121,7 @@ public class SpeedA extends Check {
             }
 
             if (deltaXZ > 0.199 && total > MAX_EXPECTED) {
-                if (++this.threshold > 9) {
+                if (++this.threshold > 3) {
                     this.fail("Player is not following game friction",
                             "deltaXZ=" + deltaXZ,
                             "total=" + total,

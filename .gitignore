@@ -1,3 +1,7 @@
 
 *.xml
 *.iml
+*.class
+*.jar
+*.properties
+*.lst

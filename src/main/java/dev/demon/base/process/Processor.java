@@ -11,11 +11,11 @@ public class Processor extends Event {
 
     private final String name;
 
-    private final User data;
+    private final User user;
 
-    public Processor(final User data) {
+    public Processor(final User user) {
         this.name = getClass().getAnnotation(ProcessorInfo.class).name();
-        this.data = data;
+        this.user = user;
     }
 
     public Material getMaterial(User user, double x, double y, double z) {

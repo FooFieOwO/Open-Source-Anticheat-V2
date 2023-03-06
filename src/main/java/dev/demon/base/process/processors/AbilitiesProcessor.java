@@ -1,6 +1,7 @@
 package dev.demon.base.process.processors;
 
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutAbilitiesPacket;
+import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutVelocityPacket;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.base.process.Processor;
 import dev.demon.base.process.ProcessorInfo;
@@ -25,7 +26,7 @@ public class AbilitiesProcessor extends Processor {
     @Override
     public void onPacket(PacketEvent event) {
         if (event.getPacketEnum() == PacketUtil.Packets.SERVER_ABILITES) {
-            WrappedOutAbilitiesPacket wrapper = new WrappedOutAbilitiesPacket(event.getPacketObject(), getData().getPlayer());
+            WrappedOutAbilitiesPacket wrapper = new WrappedOutAbilitiesPacket(event.getPacketObject(), getUser().getPlayer());
 
             this.invulnerable = wrapper.isInvulnerable();
             this.flying = wrapper.isFlying();
@@ -35,5 +36,6 @@ public class AbilitiesProcessor extends Processor {
             this.flySpeed = wrapper.getFlySpeed();
 
         }
+
     }
 }

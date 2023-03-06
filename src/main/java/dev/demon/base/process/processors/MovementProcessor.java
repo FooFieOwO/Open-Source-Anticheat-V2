@@ -26,6 +26,10 @@ public class MovementProcessor extends Processor {
 
     private double yawDeltaClamped, yawAccel, pitchAccel;
 
+    private boolean positionGround;
+
+    private int tick;
+
     private CustomLocation to = new CustomLocation();
     private CustomLocation from = new CustomLocation();
     private CustomLocation fromFrom = new CustomLocation();
@@ -43,7 +47,9 @@ public class MovementProcessor extends Processor {
             case CLIENT_LOOK:
             case CLIENT_POSITION_LOOK: {
 
-                WrappedInFlyingPacket packet = new WrappedInFlyingPacket(event.getPacketObject(), getData().getPlayer());
+                WrappedInFlyingPacket packet = new WrappedInFlyingPacket(event.getPacketObject(), getUser().getPlayer());
+
+                this.tick++;
 
                 double x = packet.getX();
                 double y = packet.getY();
@@ -56,11 +62,13 @@ public class MovementProcessor extends Processor {
 
                 this.fromFrom.setWorld(this.from.getWorld());
                 this.from.setWorld(to.getWorld());
-                this.to.setWorld(getData().getPlayer().getWorld());
+                this.to.setWorld(getUser().getPlayer().getWorld());
 
                 this.fromFrom.setOnGround(this.from.isOnGround());
                 this.from.setOnGround(this.to.isOnGround());
                 this.to.setOnGround(ground);
+
+                this.positionGround = y % (1.0/64.0) == 0.0;
 
                 if (packet.isPos()) {
                     this.fromFrom.setPosX(this.from.getPosX());

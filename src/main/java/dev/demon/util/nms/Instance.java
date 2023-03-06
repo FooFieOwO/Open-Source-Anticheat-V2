@@ -24,4 +24,6 @@ public abstract class Instance {
 
     public abstract float getSlipperiness(Location location);
 
+    public abstract void createPostHook(Runnable runnable);
+
 }

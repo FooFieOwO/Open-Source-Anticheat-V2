@@ -1,8 +1,6 @@
 package dev.demon.base.process;
 
-import dev.demon.base.process.processors.AbilitiesProcessor;
-import dev.demon.base.process.processors.MovementProcessor;
-import dev.demon.base.process.processors.PotionProcessor;
+import dev.demon.base.process.processors.*;
 import dev.demon.base.user.User;
 import lombok.Getter;
 
@@ -16,10 +14,18 @@ public class ProcessorManager {
     private final MovementProcessor movementProcessor;
     private final AbilitiesProcessor abilitiesProcessor;
     private final PotionProcessor potionProcessor;
+    private final CollisionProcessor collisionProcessor;
+    private final ActionProcessor actionProcessor;
+    private final LagProcessor lagProcessor;
+    private final CombatProcessor combatProcessor;
 
     public ProcessorManager(User user) {
         this.processors.add(this.movementProcessor = new MovementProcessor(user));
         this.processors.add(this.abilitiesProcessor = new AbilitiesProcessor(user));
         this.processors.add(this.potionProcessor = new PotionProcessor(user));
+        this.processors.add(this.collisionProcessor = new CollisionProcessor(user));
+        this.processors.add(this.actionProcessor = new ActionProcessor(user));
+        this.processors.add(this.lagProcessor = new LagProcessor(user));
+        this.processors.add(this.combatProcessor = new CombatProcessor(user));
     }
 }

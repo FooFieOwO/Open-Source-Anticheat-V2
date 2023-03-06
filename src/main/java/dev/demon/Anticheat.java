@@ -1,10 +1,14 @@
 package dev.demon;
 
 import dev.demon.base.check.api.CheckManager;
+import dev.demon.base.listener.BukkitListener;
 import dev.demon.base.user.User;
 import dev.demon.base.user.UserManager;
 import dev.demon.packet.PacketHandler;
+import dev.demon.util.config.ConfigLoader;
+import dev.demon.util.config.ConfigValues;
 import dev.demon.util.nms.InstanceManager;
+import dev.demon.util.track.TaskHandler;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,24 +25,41 @@ public class Anticheat extends JavaPlugin {
     public UserManager userManager = new UserManager();
 
     public PacketHandler handler;
-
     private CheckManager checkManager;
+
+    private final TaskHandler taskHandler = new TaskHandler();
+
+    private final ConfigValues configValues = new ConfigValues();
+    private final ConfigLoader loader = new ConfigLoader();
 
     @Override
     public void onEnable() {
-        instance = this;
 
-        this.nmsManager.create();
+        try {
 
-        this.handler = new PacketHandler();
+            instance = this;
 
-        this.checkManager.loadChecks();
+            new BukkitListener();
+
+            this.nmsManager.create();
+
+            this.handler = new PacketHandler();
+
+            this.checkManager = new CheckManager();
+            this.checkManager.loadChecks();
+
+            this.taskHandler.start();
+
+            this.loader.load();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onDisable() {
         for (User player : this.userManager.getUserMap().values()) {
-            player.getCheckManager().getChecks().clear();
             this.userManager.removePlayer(player.getPlayer());
         }
 

@@ -16,7 +16,6 @@ public class PacketEvent {
 
     public PacketEvent(String packetType, Object packetObject) {
 
-
         this.packetType = packetType;
         this.packetObject = packetObject;
         this.packetEnum = PacketUtil.toPacket(this);

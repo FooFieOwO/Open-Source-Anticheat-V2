@@ -6,6 +6,7 @@ import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.base.user.User;
+import org.bukkit.Bukkit;
 
 @Data(name = "Fly",
         checkType = CheckType.MOVEMENT,
@@ -14,11 +15,7 @@ import dev.demon.base.user.User;
 public class FlyA extends Check {
 
     private double threshold;
-    private double MAX_EXPECTED = 1E-8;
-
-    public FlyA(User user) {
-        super(user);
-    }
+    private double MAX_EXPECTED = 1E-12;
 
     @Override
     public void onPacket(PacketEvent event) {
@@ -26,7 +23,15 @@ public class FlyA extends Check {
 
             WrappedInFlyingPacket packet = new WrappedInFlyingPacket(event.getPacketObject(), getUser().getPlayer());
 
-            if (!packet.isPos()) return;
+            if (!packet.isPos()
+                    || getUser().getProcessorManager().getCollisionProcessor().getLiquidTicks() > 0
+                    || getUser().getProcessorManager().getActionProcessor().getLastVelocityTimer().hasNotPassed(9)
+                    || getUser().getProcessorManager().getCollisionProcessor().getIceTicks() > 0
+                    || getUser().getProcessorManager().getCollisionProcessor().getSoulSandTicks() > 0
+                    || getUser().getProcessorManager().getCollisionProcessor().getSlimeTicks() > 0
+                    || getUser().generalCancel()
+                    || getUser().getProcessorManager().getActionProcessor()
+                    .getServerTeleportTimer().hasNotPassed(3)) return;
 
             double deltaY = this.getUser().getProcessorManager().getMovementProcessor().getDeltaY();
 
@@ -48,7 +53,7 @@ public class FlyA extends Check {
                     if (++this.threshold > 3.5) {
                         this.fail("Player is not following proper gravity",
                                 "total=" + total,
-                                "expected=" + MAX_EXPECTED);
+                                "expected=" + this.MAX_EXPECTED);
                     }
 
                 }

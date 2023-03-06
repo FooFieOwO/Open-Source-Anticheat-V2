@@ -12,7 +12,7 @@ import lombok.Setter;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-@ProcessorInfo(name = "Potions")
+@ProcessorInfo(name = "Potion")
 @Getter
 @Setter
 public class PotionProcessor extends Processor {
@@ -42,7 +42,7 @@ public class PotionProcessor extends Processor {
                 int slowAmplifer = 0;
 
                 for (PotionEffect potionEffect : Anticheat.getInstance().getNmsManager().getInstance()
-                        .potionEffectList(getData())) {
+                        .potionEffectList(getUser())) {
 
                     PotionEffectType potionEffectType = potionEffect.getType();
 

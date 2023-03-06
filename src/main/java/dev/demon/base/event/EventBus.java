@@ -2,6 +2,7 @@ package dev.demon.base.event;
 
 import dev.demon.base.user.User;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 @Getter
 public class EventBus {
@@ -12,11 +13,12 @@ public class EventBus {
     }
 
     public void constructPacket(String type, Object packetObject) {
+        if (this.user == null) return;
+
         PacketEvent packetEvent = new PacketEvent(
                 type, packetObject
         );
 
-        if (this.user == null) return;
 
         this.user.getProcessorManager().getProcessors().forEach(check ->
                 check.onPacket(packetEvent));
@@ -26,6 +28,6 @@ public class EventBus {
                 check.onPacket(packetEvent);
             }
         });
-        
+
     }
 }

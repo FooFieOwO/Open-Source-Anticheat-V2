@@ -85,4 +85,9 @@ public class Instance1_8_R3 extends Instance {
 
         return entityPlayer.getHandle().world.c(axisAlignedBB);
     }
+
+    @Override
+    public void createPostHook(Runnable runnable) {
+        MinecraftServer.getServer().a(runnable::run);
+    }
 }
