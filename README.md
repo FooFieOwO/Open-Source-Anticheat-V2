@@ -12,20 +12,21 @@ If you decide you want to fix a error in the code, make the code cleaner, or fix
 
 You can contact me via discord: demonpvp#7922 
 
-# Commands to be added
+# Commands (not added yet)
 - /anticheat (displays command usages)
 - /anticheat alerts (displays player alerts and flags)
 
-# Permissions
+# Permissions (not added yet)
 
 anticheat.command
 
 # Development
 
 Todo:
+- More checks
+- Fix velocity checks
 - False positives
-- Code actual decent checks
-- Commands
+- Add the commands
 - Permissions
 
 # Dependencies
