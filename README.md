@@ -12,7 +12,7 @@ If you decide you want to fix a error in the code, make the code cleaner, or fix
 
 You can contact me via discord: demonpvp#7922 
 
-# Commands
+# Commands to be added
 - /anticheat (displays command usages)
 - /anticheat alerts (displays player alerts and flags)
 
@@ -23,8 +23,6 @@ anticheat.command
 # Development
 
 Todo:
-- Combat tracking
-- Velocity tracking
 - False positives
 - Code actual decent checks
 - Commands
