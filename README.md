@@ -5,7 +5,7 @@ Main Authors:
 - **demonpvp**
 
 # Game Version Support
-This anticheat will only ever support 1.7 - 1.8.8 spigot (mainly 1.8)
+This anticheat will only ever support 1.7 - 1.8.8 (mainly developed for 1.8)
 
 # Find any bugs? Maybe a bypass?
 Feel free to report them here on the "Issues" tab above, thanks!
