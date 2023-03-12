@@ -4,6 +4,9 @@ Another open source anticheat but its v2 this time :smirk:
 Main Authors:
 - **demonpvp**
 
+# Game Version Support
+This anticheat will only ever support 1.7 - 1.8.8 spigot (mainly 1.8)
+
 # Find any bugs? Maybe a bypass?
 Feel free to report them here on the "Issues" tab above, thanks!
 
