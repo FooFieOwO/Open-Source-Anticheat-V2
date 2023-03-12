@@ -1,19 +1,15 @@
 package dev.demon.base.check.impl.combat.velocity;
 
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInFlyingPacket;
 import dev.demon.base.check.api.Check;
 import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.util.PacketUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
-
-import java.nio.Buffer;
 
 @Data(name = "Velocity",
         subName = "B",
-        checkType = CheckType.MOVEMENT,
+        checkType = CheckType.COMBAT,
         description = "Checks for 99% vertical velocity")
 
 public class VelocityB extends Check {

@@ -35,26 +35,20 @@ public class Anticheat extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        try {
+        instance = this;
 
-            instance = this;
+        new BukkitListener();
 
-            new BukkitListener();
+        this.nmsManager.create();
 
-            this.nmsManager.create();
+        this.handler = new PacketHandler();
 
-            this.handler = new PacketHandler();
+        this.checkManager = new CheckManager();
+        this.checkManager.loadChecks();
 
-            this.checkManager = new CheckManager();
-            this.checkManager.loadChecks();
+        this.taskHandler.start();
 
-            this.taskHandler.start();
-
-            this.loader.load();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.loader.load();
     }
 
     @Override

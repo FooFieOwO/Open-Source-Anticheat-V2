@@ -1,15 +1,13 @@
 package dev.demon.base.check.impl.combat.aim;
 
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInFlyingPacket;
 import dev.demon.base.check.api.Check;
 import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
-import dev.demon.base.user.User;
 import dev.demon.util.PacketUtil;
 
 @Data(name = "Aim",
-        checkType = CheckType.MOVEMENT,
+        checkType = CheckType.COMBAT,
         description = "Checks for rounded rotations in the pitch.")
 
 public class AimA extends Check {
@@ -39,8 +37,6 @@ public class AimA extends Check {
                 } else {
                     this.threshold -= Math.min(this.threshold, .07);
                 }
-
-
                 break;
             }
         }

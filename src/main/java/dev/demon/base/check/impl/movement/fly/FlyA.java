@@ -1,12 +1,9 @@
 package dev.demon.base.check.impl.movement.fly;
 
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInFlyingPacket;
 import dev.demon.base.check.api.Check;
 import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
-import dev.demon.base.user.User;
-import org.bukkit.Bukkit;
 
 @Data(name = "Fly",
         checkType = CheckType.MOVEMENT,
@@ -16,22 +13,32 @@ public class FlyA extends Check {
 
     private double threshold;
     private double MAX_EXPECTED = 1E-12;
+    private int airTick;
 
     @Override
     public void onPacket(PacketEvent event) {
         if (event.isFlying()) {
 
-            WrappedInFlyingPacket packet = new WrappedInFlyingPacket(event.getPacketObject(), getUser().getPlayer());
-
-            if (!packet.isPos()
-                    || getUser().getProcessorManager().getCollisionProcessor().getLiquidTicks() > 0
+            if (getUser().getProcessorManager().getCollisionProcessor().getLiquidTicks() > 0
                     || getUser().getProcessorManager().getActionProcessor().getLastVelocityTimer().hasNotPassed(9)
-                    || getUser().getProcessorManager().getCollisionProcessor().getIceTicks() > 0
                     || getUser().getProcessorManager().getCollisionProcessor().getSoulSandTicks() > 0
                     || getUser().getProcessorManager().getCollisionProcessor().getSlimeTicks() > 0
+                    || getUser().getProcessorManager().getCollisionProcessor().getClimbableTicks() > 0
                     || getUser().generalCancel()
                     || getUser().getProcessorManager().getActionProcessor()
                     .getServerTeleportTimer().hasNotPassed(3)) return;
+
+            if (getUser().getProcessorManager().getCollisionProcessor().getBlockAboveTicks() > 0) {
+                this.airTick = 6;
+            } else {
+                this.airTick = 0;
+            }
+
+            int airTick = getUser().getProcessorManager().getMovementProcessor().getAirTicks();
+
+            boolean ground = this.getUser().getProcessorManager().getMovementProcessor().getTo().isOnGround();
+            boolean lastServerGround = this.getUser().getProcessorManager().getCollisionProcessor().isLastServerGround();
+            boolean serverGround = this.getUser().getProcessorManager().getCollisionProcessor().isServerGround();
 
             double deltaY = this.getUser().getProcessorManager().getMovementProcessor().getDeltaY();
 
@@ -43,10 +50,19 @@ public class FlyA extends Check {
                 prediction = 0.0D;
             }
 
+            if (Math.abs(prediction - deltaY) > 1.0E-5) {
+                double fixedMotion = (prediction - 0.08) * 0.98F;
+
+                if (Math.abs(fixedMotion) < 0.005) fixedMotion = 0;
+
+                if (Math.abs(fixedMotion - deltaY) < 1.0E-5) {
+                    prediction = fixedMotion;
+                }
+            }
+
             double total = Math.abs(deltaY - prediction);
 
-            if (!this.getUser().getProcessorManager().getMovementProcessor().getTo().isOnGround()
-                    && !this.getUser().getProcessorManager().getMovementProcessor().getFrom().isOnGround()) {
+            if (!ground && !serverGround && !lastServerGround && airTick > this.airTick) {
 
                 if (total > this.MAX_EXPECTED) {
 

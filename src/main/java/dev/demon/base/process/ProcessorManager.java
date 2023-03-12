@@ -2,6 +2,7 @@ package dev.demon.base.process;
 
 import dev.demon.base.process.processors.*;
 import dev.demon.base.user.User;
+import jdk.nashorn.internal.ir.Block;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class ProcessorManager {
     private final ActionProcessor actionProcessor;
     private final LagProcessor lagProcessor;
     private final CombatProcessor combatProcessor;
+    private final GhostBlockProcessor ghostBlockProcessor;
+    private final BlockProcessor blockProcessor;
 
     public ProcessorManager(User user) {
         this.processors.add(this.movementProcessor = new MovementProcessor(user));
@@ -27,5 +30,7 @@ public class ProcessorManager {
         this.processors.add(this.actionProcessor = new ActionProcessor(user));
         this.processors.add(this.lagProcessor = new LagProcessor(user));
         this.processors.add(this.combatProcessor = new CombatProcessor(user));
+        this.processors.add(this.ghostBlockProcessor = new GhostBlockProcessor(user));
+        this.processors.add(this.blockProcessor = new BlockProcessor(user));
     }
 }

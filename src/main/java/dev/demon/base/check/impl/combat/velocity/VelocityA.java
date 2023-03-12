@@ -5,11 +5,10 @@ import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.util.PacketUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 @Data(name = "Velocity",
-        checkType = CheckType.MOVEMENT,
+        checkType = CheckType.COMBAT,
         description = "Checks for 99% vertical velocity")
 
 public class VelocityA extends Check {

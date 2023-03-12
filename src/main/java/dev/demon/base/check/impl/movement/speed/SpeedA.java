@@ -6,9 +6,7 @@ import dev.demon.base.check.api.Check;
 import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
-import dev.demon.base.user.User;
 import dev.demon.util.location.CustomLocation;
-import org.bukkit.Bukkit;
 
 @Data(name = "Speed",
         checkType = CheckType.MOVEMENT,
@@ -31,6 +29,7 @@ public class SpeedA extends Check {
                     || getUser().getProcessorManager().getCollisionProcessor().getSoulSandTicks() > 0
                     || getUser().getProcessorManager().getCollisionProcessor().getSlimeTicks() > 0
                     || getUser().generalCancel()
+                    || getUser().getProcessorManager().getCollisionProcessor().getClimbableTicks() > 0
                     || getUser().getProcessorManager().getActionProcessor().getLastVelocityTimer().hasNotPassed(9)
                     || getUser().getProcessorManager().getActionProcessor()
                     .getServerTeleportTimer().hasNotPassed(3)) return;

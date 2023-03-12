@@ -15,6 +15,7 @@ import dev.demon.util.math.MathUtil;
 import dev.demon.util.math.StreamUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -141,37 +142,8 @@ public class CollisionProcessor extends Processor {
 
                 collideEntries.forEach(blockResult::process);
 
-                BoundingBox boundingBox = new BoundingBox((float) x - 0.3F,
-                        (float) y, (float) z - 0.3F,
-                        (float) x + 0.3F,
-                        (float) y + 1.8F,
-                        (float) z + 0.3F);
-
-
-                double minX = boundingBox.minX;
-                double minZ = boundingBox.minZ;
-
-                double maxX = boundingBox.maxX;
-                double maxZ = boundingBox.maxZ;
-
-                // save performance
-
-              //  boolean velocity = this.getUser().getProcessorManager().getVelocityProcessor().getVelocityTicks() < 10;
-
-                double offset = Math.abs(this.getUser().getProcessorManager().getMovementProcessor().getDeltaY()
-                        - this.blockCollisionMaxValue);
-
-                //check velocity
-                if (offset < .212) {
-                    blockResult.checkBlockAbove(getUser());
-                }
-
-                if (MathUtil.isScientificNotation(MathUtil.getCollisionModulo(minX))
-                        || MathUtil.isScientificNotation(MathUtil.getCollisionModulo(minZ))
-                        || MathUtil.isScientificNotation(MathUtil.getCollisionModulo(maxX))
-                        || MathUtil.isScientificNotation(MathUtil.getCollisionModulo(maxZ))) {
-                    blockResult.checkHorizontal(getUser());
-                }
+                blockResult.checkBlockAbove(getUser());
+                blockResult.checkHorizontal(getUser());
 
 
                 this.processTicks(blockResult);
@@ -398,12 +370,14 @@ public class CollisionProcessor extends Processor {
                     (float) user.getProcessorManager().getMovementProcessor().getTo().getPosX(),
                     (float) user.getPlayer().getEyeLocation().getY(),
                     (float) user.getProcessorManager().getMovementProcessor().getTo().getPosZ(),
+
                     (float) user.getProcessorManager().getMovementProcessor().getTo().getPosX(),
                     (float) user.getPlayer().getEyeLocation().getY(),
                     (float) user.getProcessorManager().getMovementProcessor().getTo().getPosZ())
-                    .expand(0.3f, .0, 0.3f)
+                    .expand(0.3, .0, 0.3)
                     .addXYZ(0, .625, 0).getCollidedBlocks(user), collideEntry ->
                     collideEntry.getBlock().isSolid());
+
         }
 
         public void checkHorizontal(User user) {

@@ -7,7 +7,9 @@ import dev.demon.util.track.TrackerManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -59,5 +61,13 @@ public class User {
                 || player.isFlying()
                 || player.getGameMode() == GameMode.SPECTATOR
                 || player.getGameMode() == GameMode.CREATIVE;
+    }
+
+    public boolean isSword(ItemStack itemStack) {
+        return itemStack.getType() == Material.WOOD_SWORD
+                || itemStack.getType() == Material.STONE_SWORD
+                || itemStack.getType() == Material.GOLD_SWORD
+                || itemStack.getType() == Material.IRON_SWORD
+                || itemStack.getType() == Material.DIAMOND_SWORD;
     }
 }

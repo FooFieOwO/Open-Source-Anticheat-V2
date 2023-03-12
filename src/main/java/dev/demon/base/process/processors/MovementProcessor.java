@@ -28,11 +28,15 @@ public class MovementProcessor extends Processor {
 
     private boolean positionGround;
 
-    private int tick;
+    private final double gcdOffset = Math.pow(2.0, 24.0);
+
+    private int tick, airTicks, groundTicks;
 
     private CustomLocation to = new CustomLocation();
     private CustomLocation from = new CustomLocation();
     private CustomLocation fromFrom = new CustomLocation();
+
+    private double yawGcdX;
 
 
     public MovementProcessor(User data) {
@@ -126,12 +130,36 @@ public class MovementProcessor extends Processor {
                     this.pitchAccel = Math.abs(this.deltaPitchAbs - this.lastDeltaPitchAbs);
 
                     this.yawDeltaClamped = MathUtil.wrapAngleTo180_float((float) this.deltaYaw);
+
+
+                    long gcd = gcd(
+                            (long) (this.deltaYaw
+                                    * this.gcdOffset),
+                            (long) (this.lastDeltaYaw
+                                    * this.gcdOffset)
+                    );
+
+
+                    double yawGCD = gcd / this.gcdOffset;
+
+                    this.yawGcdX = Math.abs((this.to.getYaw() - this.from.getYaw()) / yawGCD);
                 }
 
+                if (ground) {
+                    this.airTicks = 0;
+                    this.groundTicks += this.groundTicks < 20 ? 1 : 0;
+                } else {
+                    this.groundTicks = 0;
+                    this.airTicks += this.airTicks < 20 ? 1 : 0;
+                }
 
 
                 break;
             }
         }
+    }
+
+    public static long gcd(long current, long previous) {
+        return (previous <= 16384L) ? current : gcd(previous, current % previous);
     }
 }

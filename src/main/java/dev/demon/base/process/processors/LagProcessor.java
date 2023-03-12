@@ -43,6 +43,8 @@ public class LagProcessor extends Processor {
 
     private final Map<Short, List<dev.demon.util.runnable.Queue>> queueMap = new HashMap<>();
 
+
+    //Yes I know its from the old open source ac lol
     public LagProcessor(User user) {
         super(user);
 
@@ -73,7 +75,6 @@ public class LagProcessor extends Processor {
                 // log post ping
                 if (isPost) {
 
-                    // use this for hitboxes and reach and possibly other sensitive stuff..
                     this.postPing = (now - this.postTransactionMap.get(action));
 
                     // post ping tick
