@@ -52,6 +52,8 @@ public class BukkitListener implements Listener {
 
             if (user == null) return;
 
+            //Anticheat disabler lol
+            /*
             if (((PlayerInteractEvent) event).getAction() == Action.RIGHT_CLICK_AIR) {
 
                 if (((PlayerInteractEvent) event).getItem() == null
@@ -67,7 +69,7 @@ public class BukkitListener implements Listener {
                         user.getProcessorManager().getMovementProcessor().setTick(20);
                     }
                 }
-            }
+            }*/
         }
     }
 }
