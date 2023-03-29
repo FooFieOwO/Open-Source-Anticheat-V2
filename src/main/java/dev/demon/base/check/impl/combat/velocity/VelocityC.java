@@ -8,10 +8,11 @@ import dev.demon.util.PacketUtil;
 import org.bukkit.util.Vector;
 
 @Data(name = "Velocity",
+        subName = "C",
         checkType = CheckType.COMBAT,
-        description = "Checks for 99% vertical velocity")
+        description = "Checks for 99% vertical velocity second tick")
 
-public class VelocityA extends Check {
+public class VelocityC extends Check {
 
     private double threshold;
 
@@ -27,17 +28,23 @@ public class VelocityA extends Check {
 
                 if (vector != null) {
 
-                    if (getUser().getProcessorManager().getActionProcessor().getLastConfirmedVelocityTick() == 1) {
+                    if (getUser().getProcessorManager().getActionProcessor().getLastConfirmedVelocityTick() == 2) {
 
                         boolean ground = getUser().getProcessorManager().getMovementProcessor().getTo().isOnGround();
                         boolean lastGround = getUser().getProcessorManager().getMovementProcessor().getFrom().isOnGround();
+                        boolean lastLastGround = getUser().getProcessorManager()
+                                .getMovementProcessor().getFromFrom().isOnGround();
 
                         double deltaY = getUser().getProcessorManager().getMovementProcessor().getDeltaY();
+
                         double velocityY = vector.getY();
+
+                        velocityY -= 0.08D;
+                        velocityY *= 0.98F;
 
                         double total = Math.abs(deltaY / velocityY);
 
-                        if (total <= 0.99 && lastGround && !ground) {
+                        if (total <= 0.99 && lastLastGround && !lastGround && !ground) {
                             if (++this.threshold > 3) {
                                 this.fail("Invalid vertical velocity", "t="+total);
                             }

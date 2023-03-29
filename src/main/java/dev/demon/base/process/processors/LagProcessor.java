@@ -27,8 +27,6 @@ public class LagProcessor extends Processor {
 
     private double offsetY, offsetX, offsetZ;
 
-    private final EventTimer serverTeleportTimer;
-
     private long lastTransaction;
 
     private long transactionPing, lastTransactionPing;
@@ -43,18 +41,30 @@ public class LagProcessor extends Processor {
 
     private final Map<Short, List<dev.demon.util.runnable.Queue>> queueMap = new HashMap<>();
 
+    private final Map<Short, Long> lastActionQueue = new HashMap<>();
+
+    private final Map<Short, Long> transactionQueue = new HashMap<>();
+
 
     //Yes I know its from the old open source ac lol
     public LagProcessor(User user) {
         super(user);
-
-        this.serverTeleportTimer = new EventTimer(20, user);
     }
 
     @Override
     public void onPacket(PacketEvent event) {
         switch (PacketUtil.toPacket(event)) {
             case SERVER_TRANSACTION: {
+                WrappedOutTransaction packet =
+                        new WrappedOutTransaction(event.getPacketObject(), getUser().getPlayer());
+
+                short action = packet.getAction();
+
+                if (this.queueMap.containsKey(action)) {
+                    this.lastActionQueue.put(action, event.getTimestamp());
+                }
+
+                this.transactionQueue.put(action, event.getTimestamp());
 
                 break;
             }
@@ -71,6 +81,10 @@ public class LagProcessor extends Processor {
 
                 boolean isPre = this.preTransactionMap.containsKey(action);
                 boolean isPost = this.postTransactionMap.containsKey(action);
+
+                if (this.transactionQueue.containsKey(action)) {
+                    this.transactionQueue.clear();
+                }
 
                 // log post ping
                 if (isPost) {
@@ -107,6 +121,7 @@ public class LagProcessor extends Processor {
 
                 if (this.queueMap.containsKey(action)) {
                     List<Queue> queues = this.queueMap.remove(action);
+                    this.lastActionQueue.remove(action);
 
                     // run every action queued for that tick
                     queues.forEach(Queue::run);

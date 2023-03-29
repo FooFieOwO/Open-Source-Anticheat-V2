@@ -5,6 +5,7 @@ import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.util.PacketUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 @Data(name = "Velocity",
@@ -29,22 +30,21 @@ public class VelocityB extends Check {
                 //TODO: make this not actual dog shit.
                 if (vector != null) {
 
-                    if (getUser().getProcessorManager().getActionProcessor().getLastVelocityTick() <= 6) {
-
-                        boolean ground = getUser().getProcessorManager().getMovementProcessor().getTo().isOnGround();
-                        boolean lastGround = getUser().getProcessorManager().getMovementProcessor().getFrom().isOnGround();
+                    if (getUser().getProcessorManager().getActionProcessor().getLastConfirmedVelocityTick() == 1) {
 
                         double deltaY = getUser().getProcessorManager().getMovementProcessor().getDeltaY();
                         double velocityY = vector.getY();
 
                         double total = Math.abs(deltaY / velocityY);
 
-                        if (lastGround && ground) {
-                            if (++this.threshold > 10) {
-                                this.fail("Invalid vertical velocity", "t="+total);
+                        if (total == 0.00) {
+
+                            if (++this.threshold > 4.5) {
+                                this.fail("No vertical velocity");
                             }
+
                         } else {
-                            this.threshold -= Math.min(this.threshold, 2.5);
+                            this.threshold -= Math.min(this.threshold, 1);
                         }
                     }
                 }

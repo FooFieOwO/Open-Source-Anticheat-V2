@@ -13,6 +13,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 @Getter
 @Setter
 public class Anticheat extends JavaPlugin {
@@ -28,6 +31,8 @@ public class Anticheat extends JavaPlugin {
     private CheckManager checkManager;
 
     private final TaskHandler taskHandler = new TaskHandler();
+
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     private final ConfigValues configValues = new ConfigValues();
     private final ConfigLoader loader = new ConfigLoader();

@@ -20,22 +20,33 @@ public class AimA extends Check {
             case CLIENT_LOOK:
             case CLIENT_POSITION_LOOK: {
 
-                if (getUser().generalCancel()
-                        || getUser().getProcessorManager().getCombatProcessor().getLastAttackTimer().hasNotPassed(1)
+                if (getUser().generalCancel()) return;
+
+                if (getUser().getProcessorManager().getCombatProcessor().getLastAttackTimer().getDelta() < 3
                         || getUser().getProcessorManager().getActionProcessor()
-                        .getServerTeleportTimer().hasNotPassed(3)) return;
+                        .getServerTeleportTimer().hasNotPassed(3)) {
 
-                double deltaPitchAbs = getUser().getProcessorManager().getMovementProcessor().getDeltaPitchAbs();
+                    //Make this into one check just for keksi! <3
+                    double deltaPitchAbs = getUser().getProcessorManager().getMovementProcessor().getDeltaPitchAbs();
+                    double deltaYawAbs = getUser().getProcessorManager().getMovementProcessor().getDeltaYawAbs();
 
-                boolean invalidPitch = deltaPitchAbs % 1.5 != 0.0 && deltaPitchAbs == Math.round(deltaPitchAbs);
+                    boolean invalidYaw = deltaYawAbs % 1.5 != 0.0
+                            && deltaYawAbs == Math.round(deltaYawAbs)
+                            && deltaYawAbs > 0.0;
 
-                if (invalidPitch) {
-                    if (++this.threshold > 4.5) {
-                        this.fail("Consistently rounded pitch",
-                                "dpa=" + deltaPitchAbs);
+                    boolean invalidPitch = deltaPitchAbs % 1.5 != 0.0
+                            && deltaPitchAbs == Math.round(deltaPitchAbs)
+                            && deltaPitchAbs > 0.0;
+
+                    if (invalidPitch || invalidYaw) {
+                        if (++this.threshold > 7.5) {
+                            this.fail("Consistently rounded rotation",
+                                    "deltaPitch=" + deltaPitchAbs,
+                                    "deltaYaw=" + deltaYawAbs);
+                        }
+                    } else {
+                        this.threshold -= Math.min(this.threshold, .07);
                     }
-                } else {
-                    this.threshold -= Math.min(this.threshold, .07);
                 }
                 break;
             }

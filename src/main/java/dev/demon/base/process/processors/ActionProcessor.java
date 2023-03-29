@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 @Getter
 @Setter
 @ProcessorInfo(
@@ -28,6 +31,8 @@ public class ActionProcessor extends Processor {
     private int lastConfirmedVelocityTick, lastVelocityTick;
 
     private double velocityH;
+
+    private final HashMap<Long, Short> velocityQueue = new HashMap<>();
 
     public ActionProcessor(User user) {
         super(user);
@@ -97,11 +102,11 @@ public class ActionProcessor extends Processor {
                     this.lastVelocityTimer.reset();
                     this.lastVelocityTick = 0;
 
-                    getUser().getProcessorManager().getLagProcessor().queue(false, () -> {
+                    getUser().getProcessorManager().getLagProcessor().queue(false,
+                            () -> this.lastConfirmedVelocityTick = 0);
 
-                        this.lastConfirmedVelocityTick = 0;
-
-                    });
+                    getUser().getProcessorManager().getLagProcessor().queue(true,
+                            () -> this.lastConfirmedVelocityTick = 0);
 
                 }
 

@@ -46,7 +46,9 @@ public class GhostBlockProcessor extends Processor {
             case CLIENT_LOOK:
             case CLIENT_POSITION_LOOK: {
 
-                if (getUser().getPlayer().getWorld() == null || getUser().generalCancel()) return;
+                if (getUser().getPlayer().getWorld() == null
+                        || getUser().
+                        || getUser().generalCancel()) return;
 
                 CustomLocation location = getUser().getProcessorManager().getMovementProcessor().getTo();
 
@@ -60,14 +62,26 @@ public class GhostBlockProcessor extends Processor {
                             location.getPosY(), location.getPosZ(), location.getYaw(), location.getPitch());
                 }
 
+
                 if (ground && !serverGround && !lastServerGround) {
 
-                    if (this.location != null) {
-                        RunUtils.task(() -> getUser().getPlayer().teleport(this.location));
-                        this.fail("%PLAYER% failed ghost block processor (Lag Back A)");
-                    } else {
-                        RunUtils.task(() -> getUser().getPlayer().teleport(this.spawnLocation));
-                        this.fail("%PLAYER% failed ghost block processor (Lag Back B)");
+                    if (getUser().getProcessorManager()
+                            .getBlockProcessor().getLastConfirmedBlockPlaceTimer().hasNotPassed(1)) {
+                        this.ghostBlockTicks = 0;
+                    }
+
+                    if (++this.ghostBlockTicks > 1) {
+
+                        if (this.location != null) {
+                            RunUtils.task(() -> getUser().getPlayer().teleport(this.location));
+                            this.fail("%PLAYER% failed ghost block processor (Lag Back A)");
+
+                        } else {
+                            RunUtils.task(() -> getUser().getPlayer().teleport(this.spawnLocation));
+                            this.fail("%PLAYER% failed ghost block processor (Lag Back B)");
+                        }
+
+                        this.ghostBlockTicks = 0;
                     }
                 }
 

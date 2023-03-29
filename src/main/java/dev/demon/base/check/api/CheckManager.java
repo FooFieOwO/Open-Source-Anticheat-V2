@@ -20,6 +20,10 @@ public class CheckManager {
 
         //Combat
         this.checks.add(new AimA());
+        this.checks.add(new AimB());
+        this.checks.add(new AimC());
+        this.checks.add(new AimD());
+        this.checks.add(new AimE());
 
         this.checks.add(new KillAuraA());
 
@@ -27,10 +31,13 @@ public class CheckManager {
 
         this.checks.add(new VelocityA());
         this.checks.add(new VelocityB());
+        this.checks.add(new VelocityC());
 
         //Movement
         this.checks.add(new FlyA());
         this.checks.add(new FlyB());
+        this.checks.add(new FlyC());
+        this.checks.add(new FlyD());
 
         this.checks.add(new SpeedA());
         this.checks.add(new SpeedB());
@@ -40,8 +47,13 @@ public class CheckManager {
         this.checks.add(new BadPacketsB());
         this.checks.add(new BadPacketsC());
         this.checks.add(new BadPacketsD());
+        this.checks.add(new BadPacketsE());
+        this.checks.add(new BadPacketsF());
 
         this.checks.add(new ScaffoldA());
+        this.checks.add(new ScaffoldB());
+        this.checks.add(new ScaffoldC());
+        this.checks.add(new ScaffoldD());
 
         this.checks.add(new TimerA());
     }

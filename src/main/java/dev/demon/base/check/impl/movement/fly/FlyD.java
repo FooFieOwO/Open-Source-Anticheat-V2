@@ -4,15 +4,14 @@ import dev.demon.base.check.api.Check;
 import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
-import org.bukkit.Bukkit;
 
 @Data(name = "Fly",
-        subName = "C",
+        subName = "D",
         checkType = CheckType.MOVEMENT,
         experimental = true,
-        description = "Checks for impossible movements in the air (ig).")
+        description = "YPort/rapid motion y movements check (omg phoenix haven check!!!!)")
 
-public class FlyC extends Check {
+public class FlyD extends Check {
 
     private double threshold;
 
@@ -31,31 +30,15 @@ public class FlyC extends Check {
                     .getServerTeleportTimer().hasNotPassed(3)) return;
 
 
-            boolean ground = getUser().getProcessorManager().getMovementProcessor().getTo().isOnGround();
-            boolean serverGround = getUser().getProcessorManager().getCollisionProcessor().isServerGround();
-
-            int airTicks = getUser().getProcessorManager().getCollisionProcessor().getServerAirTicks();
-
             double deltaY = getUser().getProcessorManager().getMovementProcessor().getDeltaY();
+            double lastDeltaY = getUser().getProcessorManager().getMovementProcessor().getLastDeltaY();
 
-            if (!ground && !serverGround && airTicks > 7) {
-
-                if (deltaY >= 0.0) {
-
-                    this.threshold++;
-
-                    if (++this.threshold > 5) {
-                        this.fail("Invalid motion when in the air",
-                                "deltaY=" + deltaY,
-                                "airTick=" + airTicks,
-                                "threshold=" + this.threshold);
-                    }
-
-                } else {
-                    this.threshold -= Math.min(this.threshold, .0125);
+            if (deltaY > 0.0 && lastDeltaY < 0.0) {
+                if (++this.threshold > 6.5) {
+                    this.fail("Improper movements when going up and down.");
                 }
             } else {
-                this.threshold -= Math.min(this.threshold, .025);
+                this.threshold -= Math.min(this.threshold, .25);
             }
         }
     }
