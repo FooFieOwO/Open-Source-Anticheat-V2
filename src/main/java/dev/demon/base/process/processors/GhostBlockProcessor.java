@@ -47,7 +47,6 @@ public class GhostBlockProcessor extends Processor {
             case CLIENT_POSITION_LOOK: {
 
                 if (getUser().getPlayer().getWorld() == null
-                        || getUser().
                         || getUser().generalCancel()) return;
 
                 CustomLocation location = getUser().getProcessorManager().getMovementProcessor().getTo();
