@@ -50,7 +50,7 @@ public abstract class Check extends Event implements Cloneable {
         return null;
     }
 
-    public void fail(String... data) {
+    public void fail(final String... data) {
         if (this.user == null) return;
 
         if (getUser().getPlayer().isOp() && Anticheat.getInstance().getConfigValues().isAllowOp()
@@ -59,10 +59,14 @@ public abstract class Check extends Event implements Cloneable {
         }
 
         if (System.currentTimeMillis() - this.lastVerbose > 300L) {
-            StringBuilder stringBuilder = new StringBuilder();
+            final StringBuilder stringBuilder = new StringBuilder();
 
-            for (String s : data) {
-                stringBuilder.append(s).append(", ");
+            for (final String s : data) {
+                if (stringBuilder.length() > 0) {
+                    stringBuilder.append("\n");
+                }
+
+                stringBuilder.append(s);
             }
 
             String checkType = this.checkType;
@@ -71,13 +75,13 @@ public abstract class Check extends Event implements Cloneable {
                 checkType += "*";
             }
 
-            String alert = Anticheat.getInstance().getConfigValues().getAlertsMessage().replace("%VL%",
+            final String alert = Anticheat.getInstance().getConfigValues().getAlertsMessage().replace("%VL%",
                             Double.toString(violations)).replace("%PLAYER%", getUser().getPlayer().getName())
                     .replace("%CHECK%", checkName).replace("%CHECKTYPE%", checkType).
                     replace("%MAX-VL%", Double.toString(punishmentVL))
                     .replace("%PREFIX%", Anticheat.getInstance().getConfigValues().getPrefix());
 
-            TextComponent textComponent = new TextComponent(alert);
+            final TextComponent textComponent = new TextComponent(alert);
 
             textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                     new ComponentBuilder(stringBuilder.toString().trim()).create()));
