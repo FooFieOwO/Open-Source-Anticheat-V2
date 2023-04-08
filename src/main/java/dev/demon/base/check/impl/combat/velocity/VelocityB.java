@@ -5,7 +5,6 @@ import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.util.PacketUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 @Data(name = "Velocity",
@@ -35,12 +34,12 @@ public class VelocityB extends Check {
                         double deltaY = getUser().getProcessorManager().getMovementProcessor().getDeltaY();
                         double velocityY = vector.getY();
 
-                        double total = Math.abs(deltaY / velocityY);
+                        double total = deltaY - velocityY;
 
-                        if (total == 0.00) {
+                        if (total > 0.078375 || total < -0.00001) {
 
                             if (++this.threshold > 4.5) {
-                                this.fail("No vertical velocity");
+                                this.fail("No vertical velocity", "DeltaY=" + deltaY, "VelocityY=" + velocityY);
                             }
 
                         } else {
