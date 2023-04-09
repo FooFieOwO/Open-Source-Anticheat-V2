@@ -26,7 +26,7 @@ public class MovementProcessor extends Processor {
 
     private double yawDeltaClamped, yawAccel, pitchAccel;
 
-    private boolean positionGround;
+    private boolean positionGround, positionHeadBump;
 
     private final double gcdOffset = Math.pow(2.0, 24.0);
 
@@ -72,7 +72,8 @@ public class MovementProcessor extends Processor {
                 this.from.setOnGround(this.to.isOnGround());
                 this.to.setOnGround(ground);
 
-                this.positionGround = y % (1.0/64.0) == 0.0;
+                this.positionGround = y % (1.0 / 64.0) == 0.0;
+                this.positionHeadBump = (y + 1.8f) % (1.0 / 64.0) == 0.0;
 
                 if (packet.isPos()) {
                     this.fromFrom.setPosX(this.from.getPosX());
