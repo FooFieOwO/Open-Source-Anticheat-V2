@@ -1,14 +1,20 @@
 package dev.demon.base.check.api;
 
 import dev.demon.base.check.impl.combat.aim.*;
-import dev.demon.base.check.impl.combat.hitbox.*;
-import dev.demon.base.check.impl.combat.killaura.*;
-import dev.demon.base.check.impl.combat.velocity.*;
+import dev.demon.base.check.impl.combat.hitbox.HitBoxA;
+import dev.demon.base.check.impl.combat.killaura.KillAuraA;
+import dev.demon.base.check.impl.combat.velocity.VelocityA;
+import dev.demon.base.check.impl.combat.velocity.VelocityB;
+import dev.demon.base.check.impl.combat.velocity.VelocityC;
 import dev.demon.base.check.impl.misc.badpackets.*;
 import dev.demon.base.check.impl.misc.scaffold.*;
-import dev.demon.base.check.impl.misc.timer.*;
-import dev.demon.base.check.impl.movement.fly.*;
-import dev.demon.base.check.impl.movement.speed.*;
+import dev.demon.base.check.impl.misc.timer.TimerA;
+import dev.demon.base.check.impl.movement.fly.FlyA;
+import dev.demon.base.check.impl.movement.fly.FlyB;
+import dev.demon.base.check.impl.movement.fly.FlyC;
+import dev.demon.base.check.impl.movement.fly.FlyD;
+import dev.demon.base.check.impl.movement.speed.SpeedA;
+import dev.demon.base.check.impl.movement.speed.SpeedB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +60,7 @@ public class CheckManager {
         this.checks.add(new ScaffoldB());
         this.checks.add(new ScaffoldC());
         this.checks.add(new ScaffoldD());
+        this.checks.add(new ScaffoldE());
 
         this.checks.add(new TimerA());
     }
