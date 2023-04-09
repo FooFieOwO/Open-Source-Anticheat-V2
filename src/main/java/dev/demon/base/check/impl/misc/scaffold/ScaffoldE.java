@@ -7,6 +7,7 @@ import dev.demon.base.check.api.Check;
 import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
+import dev.demon.util.Buffer;
 import dev.demon.util.PacketUtil;
 import dev.demon.util.location.CustomLocation;
 
@@ -18,8 +19,7 @@ import dev.demon.util.location.CustomLocation;
 
 public class ScaffoldE extends Check {
 
-    private double threshold;
-
+    private final Buffer buffer = new Buffer(10);
     //Don't judge me for this, It is 02:25
 
     @Override
@@ -40,11 +40,11 @@ public class ScaffoldE extends Check {
 
                     if (distance < 0.76 && distance > 0 &&
                             getUser().getProcessorManager().getMovementProcessor().getDeltaXZ() > 0.18) {
-                        if (this.threshold++ > 5) {
+                        if (this.buffer.add() > 5) {
                             this.fail("Invalid place distance", "Distance=" + distance);
                         }
                     } else {
-                        this.threshold = Math.max(0, this.threshold - 0.1);
+                        this.buffer.reduce(0.1);
                     }
                 }
                 break;
@@ -54,7 +54,7 @@ public class ScaffoldE extends Check {
             case CLIENT_POSITION:
             case CLIENT_LOOK:
             case CLIENT_POSITION_LOOK: {
-                this.threshold = Math.max(0, this.threshold - 0.025);
+                this.buffer.reduce(0.025);
             }
         }
     }
