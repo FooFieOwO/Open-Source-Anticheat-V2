@@ -4,6 +4,9 @@ Another open source anticheat but its v2 this time :smirk:
 Main Authors:
 - **demonpvp**
 
+Contributors:
+- FooFieOwO (https://github.com/FooFieOwO)
+
 # Game Version Support
 This anticheat will only ever support 1.7 - 1.8.9 (mainly developed for 1.8)
 
