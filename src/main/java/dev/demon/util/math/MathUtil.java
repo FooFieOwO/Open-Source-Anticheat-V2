@@ -1,5 +1,8 @@
 package dev.demon.util.math;
 
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumDirection;
+import cc.funkemunky.api.utils.math.IntVector;
+import dev.demon.util.location.CustomLocation;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -60,4 +63,20 @@ public class MathUtil {
 
         return entities;
     }
+
+    public static double getPlaceDistance(final CustomLocation playerPos, final IntVector placePos, final WrappedEnumDirection facing) {
+        switch (facing) {
+            case NORTH:
+            case SOUTH:
+                return Math.abs(playerPos.getPosZ() - (placePos.getZ() + 0.5));
+
+            case EAST:
+            case WEST:
+                return Math.abs(playerPos.getPosX() - (placePos.getX() + 0.5));
+
+            default:
+                return -1; //Invalid
+        }
+    }
+
 }
