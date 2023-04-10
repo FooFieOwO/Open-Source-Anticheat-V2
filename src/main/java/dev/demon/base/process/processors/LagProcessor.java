@@ -11,12 +11,14 @@ import dev.demon.base.process.ProcessorInfo;
 import dev.demon.base.user.User;
 import dev.demon.util.PacketUtil;
 import dev.demon.util.runnable.Queue;
-import dev.demon.util.time.EventTimer;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.util.NumberConversions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -46,7 +48,12 @@ public class LagProcessor extends Processor {
     private final Map<Short, Long> transactionQueue = new HashMap<>();
 
 
-    //Yes I know its from the old open source ac lol
+    /** Yes I know its from the old open source ac lol
+     *
+     * Todo add a EntitySyncTracker to this to sync entity position with ping.
+     * e.g https://github.com/ScatDev/Aquarium/blob/main/src/main/java/dev/scat/aquarium/data/processor/impl/EntityProcessor.java
+     * Can be used for aimchecks reach checks or other stuff. really useful owo
+     */
     public LagProcessor(User user) {
         super(user);
     }
