@@ -17,57 +17,62 @@ import dev.demon.base.check.impl.movement.speed.SpeedA;
 import dev.demon.base.check.impl.movement.speed.SpeedB;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CheckManager {
+
     public final List<Check> checks = new ArrayList<>();
 
     public void loadChecks() {
+        this.checks.addAll(Arrays.asList(
+                //Combat
+                new AimA(),
+                new AimB(),
+                new AimC(),
+                new AimD(),
+                new AimE(),
 
-        //Combat
-        this.checks.add(new AimA());
-        this.checks.add(new AimB());
-        this.checks.add(new AimC());
-        this.checks.add(new AimD());
-        this.checks.add(new AimE());
+                new KillAuraA(),
 
-        this.checks.add(new KillAuraA());
+                new HitBoxA(),
 
-        this.checks.add(new HitBoxA());
+                new VelocityA(),
+                new VelocityB(),
+                new VelocityC(),
 
-        this.checks.add(new VelocityA());
-        this.checks.add(new VelocityB());
-        this.checks.add(new VelocityC());
+                //Movement
+                new FlyA(),
+                new FlyB(),
+                new FlyC(),
+                new FlyD(),
 
-        //Movement
-        this.checks.add(new FlyA());
-        this.checks.add(new FlyB());
-        this.checks.add(new FlyC());
-        this.checks.add(new FlyD());
+                new SpeedA(),
+                new SpeedB(),
 
-        this.checks.add(new SpeedA());
-        this.checks.add(new SpeedB());
+                //Misc
+                new BadPacketsA(),
+                new BadPacketsB(),
+                new BadPacketsC(),
+                new BadPacketsD(),
+                new BadPacketsE(),
+                new BadPacketsF(),
+                new BadPacketsG(),
 
-        //Misc
-        this.checks.add(new BadPacketsA());
-        this.checks.add(new BadPacketsB());
-        this.checks.add(new BadPacketsC());
-        this.checks.add(new BadPacketsD());
-        this.checks.add(new BadPacketsE());
-        this.checks.add(new BadPacketsF());
+                new ScaffoldA(),
+                new ScaffoldB(),
+                new ScaffoldC(),
+                new ScaffoldD(),
+                new ScaffoldE(),
 
-        this.checks.add(new ScaffoldA());
-        this.checks.add(new ScaffoldB());
-        this.checks.add(new ScaffoldC());
-        this.checks.add(new ScaffoldD());
-        this.checks.add(new ScaffoldE());
-
-        this.checks.add(new TimerA());
+                new TimerA()
+        ));
     }
 
     public List<Check> cloneChecks() {
-        List<Check> checks = new ArrayList<>();
+        final List<Check> checks = new ArrayList<>();
         this.checks.forEach(check -> checks.add(check.clone()));
         return checks;
     }
+
 }
