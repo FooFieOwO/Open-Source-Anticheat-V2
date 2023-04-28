@@ -23,9 +23,11 @@ public class CheckManager {
         this.checks.add(new AimB());
         this.checks.add(new AimC());
         this.checks.add(new AimD());
-        this.checks.add(new AimE());
+        this.checks.add(new AimD());
 
         this.checks.add(new KillAuraA());
+        this.checks.add(new KillAuraB());
+        this.checks.add(new KillAuraC());
 
         this.checks.add(new HitBoxA());
 
@@ -38,6 +40,7 @@ public class CheckManager {
         this.checks.add(new FlyB());
         this.checks.add(new FlyC());
         this.checks.add(new FlyD());
+        this.checks.add(new FlyE());
 
         this.checks.add(new SpeedA());
         this.checks.add(new SpeedB());

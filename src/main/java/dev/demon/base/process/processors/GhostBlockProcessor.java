@@ -28,6 +28,8 @@ public class GhostBlockProcessor extends Processor {
     private Location location = null;
     private Location spawnLocation = null;
 
+    private int invalidChunkTicks;
+
     private boolean flag = false;
     private int lastTeleport;
 
@@ -61,6 +63,7 @@ public class GhostBlockProcessor extends Processor {
                             location.getPosY(), location.getPosZ(), location.getYaw(), location.getPitch());
                 }
 
+                this.fixChunkMotion(getUser());
 
                 if (ground && !serverGround && !lastServerGround) {
 
@@ -90,6 +93,32 @@ public class GhostBlockProcessor extends Processor {
                 }
 
                 break;
+            }
+        }
+    }
+
+    private void fixChunkMotion(User user) {
+        double deltaY = user.getProcessorManager().getMovementProcessor().getDeltaY();
+
+        final boolean invalid = deltaY + 0.09800000190734881 <= 0.001
+                && deltaY + 0.09800000190734881 >= -0.00001 && Math.abs(deltaY) > 0.07
+                && Math.abs(deltaY) < 0.09801f;
+
+        if (invalid) {
+
+            this.invalidChunkTicks++;
+
+            if (this.invalidChunkTicks > 4) {
+
+                Location groundLocation = this.location != null ? this.location : user.getPlayer().getLocation();
+
+                RunUtils.task(() ->
+                        user.getPlayer().teleport(groundLocation.clone().add(0, 1.0D, 0)));
+            }
+
+            if (this.invalidChunkTicks > 14) {
+                user.kickPlayer(
+                        "attempting to abuse unloaded chunks/being in an unloaded chunk too long");
             }
         }
     }

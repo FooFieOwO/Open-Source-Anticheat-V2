@@ -22,6 +22,7 @@ public class BadPacketsA extends Check {
             case CLIENT_POSITION_LOOK: {
 
                 if (getUser().generalCancel()
+                        || getUser().getProcessorManager().getActionProcessor().getServerTeleportTimer().hasNotPassed(3)
                         || getUser().getProcessorManager().getCollisionProcessor().getClimbableTicks() > 0) {
                     return;
                 }

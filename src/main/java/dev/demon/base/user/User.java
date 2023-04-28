@@ -1,15 +1,18 @@
 package dev.demon.base.user;
 
+import dev.demon.Anticheat;
 import dev.demon.base.event.EventBus;
 import dev.demon.base.process.ProcessorManager;
 import dev.demon.util.box.BoundingBox;
 import dev.demon.util.track.TrackerManager;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -32,7 +35,7 @@ public class User {
 
     private final TrackerManager trackerManager = new TrackerManager();
 
-    private boolean alerts = true;
+    private boolean alerts = true, kicked;
 
     public User(Player player) {
 
@@ -69,5 +72,22 @@ public class User {
                 || itemStack.getType() == Material.GOLD_SWORD
                 || itemStack.getType() == Material.IRON_SWORD
                 || itemStack.getType() == Material.DIAMOND_SWORD;
+    }
+
+    public void kickPlayer(String consoleMessage) {
+
+        if (this.kicked) return;
+        this.kicked = true;
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Anticheat.getInstance().getServer().getConsoleSender().sendMessage(Anticheat.getInstance()
+                        .getConfigValues().getPrefix()
+                        + " " + ChatColor.RED
+                        + "Kicking " + ChatColor.GOLD + player.getName() + ChatColor.RED + " for " + consoleMessage);
+                player.kickPlayer("Disconnected.");
+            }
+        }.runTask(Anticheat.getInstance());
     }
 }

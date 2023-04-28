@@ -58,44 +58,40 @@ public abstract class Check extends Event implements Cloneable {
             return;
         }
 
-        if (System.currentTimeMillis() - this.lastVerbose > 300L) {
-            final StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
 
-            for (final String s : data) {
-                if (stringBuilder.length() > 0) {
-                    stringBuilder.append("\n");
-                }
-
-                stringBuilder.append(s);
+        for (final String s : data) {
+            if (stringBuilder.length() > 0) {
+                stringBuilder.append("\n");
             }
 
-            String checkType = this.checkType;
+            stringBuilder.append(s);
+        }
 
-            if (this.experimental) {
-                checkType += "*";
-            }
+        String checkType = this.checkType;
 
-            final String alert = Anticheat.getInstance().getConfigValues().getAlertsMessage().replace("%VL%",
-                            Double.toString(violations)).replace("%PLAYER%", getUser().getPlayer().getName())
-                    .replace("%CHECK%", checkName).replace("%CHECKTYPE%", checkType).
-                    replace("%MAX-VL%", Double.toString(punishmentVL))
-                    .replace("%PREFIX%", Anticheat.getInstance().getConfigValues().getPrefix());
+        if (this.experimental) {
+            checkType += "*";
+        }
 
-            final TextComponent textComponent = new TextComponent(alert);
+        final String alert = Anticheat.getInstance().getConfigValues().getAlertsMessage().replace("%VL%",
+                        Double.toString(violations)).replace("%PLAYER%", getUser().getPlayer().getName())
+                .replace("%CHECK%", checkName).replace("%CHECKTYPE%", checkType).
+                replace("%MAX-VL%", Double.toString(punishmentVL))
+                .replace("%PREFIX%", Anticheat.getInstance().getConfigValues().getPrefix());
 
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    new ComponentBuilder(stringBuilder.toString().trim()).create()));
+        final TextComponent textComponent = new TextComponent(alert);
 
-            Anticheat.getInstance().getUserManager().getUserMap().entrySet().stream().filter(uuidUserEntry ->
-                            uuidUserEntry.getValue().getPlayer().isOp() && uuidUserEntry.getValue().isAlerts())
-                    .forEach(uuidUserEntry -> uuidUserEntry.getValue().getPlayer().spigot().sendMessage(textComponent));
+        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new ComponentBuilder(stringBuilder.toString().trim()).create()));
+
+        Anticheat.getInstance().getUserManager().getUserMap().entrySet().stream().filter(uuidUserEntry ->
+                        uuidUserEntry.getValue().getPlayer().isOp() && uuidUserEntry.getValue().isAlerts())
+                .forEach(uuidUserEntry -> uuidUserEntry.getValue().getPlayer().spigot().sendMessage(textComponent));
 
 
-            if (Anticheat.getInstance().getConfigValues().isConsoleAlerts()) {
-                Anticheat.getInstance().getServer().getConsoleSender().sendMessage(alert);
-            }
-
-            this.lastVerbose = System.currentTimeMillis();
+        if (Anticheat.getInstance().getConfigValues().isConsoleAlerts()) {
+            Anticheat.getInstance().getServer().getConsoleSender().sendMessage(alert);
         }
 
         if (this.violations >= this.punishmentVL && !getUser().isBanned()

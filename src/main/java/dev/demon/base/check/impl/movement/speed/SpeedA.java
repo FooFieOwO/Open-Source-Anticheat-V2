@@ -119,7 +119,7 @@ public class SpeedA extends Check {
                 this.MAX_EXPECTED = 0.1;
             }
 
-            if (deltaXZ > 0.199 && total > MAX_EXPECTED) {
+            if (deltaXZ > 0.2 && total > MAX_EXPECTED) {
                 if (++this.threshold > 3) {
                     this.fail("Player is not following game friction",
                             "deltaXZ=" + deltaXZ,
