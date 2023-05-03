@@ -1,18 +1,20 @@
 package dev.demon.base.check.api;
 
-import dev.demon.base.check.impl.combat.aim.*;
+import dev.demon.base.check.impl.combat.aim.AimA;
+import dev.demon.base.check.impl.combat.aim.AimB;
+import dev.demon.base.check.impl.combat.aim.AimC;
+import dev.demon.base.check.impl.combat.aim.AimD;
 import dev.demon.base.check.impl.combat.hitbox.HitBoxA;
 import dev.demon.base.check.impl.combat.killaura.KillAuraA;
+import dev.demon.base.check.impl.combat.killaura.KillAuraB;
+import dev.demon.base.check.impl.combat.killaura.KillAuraC;
 import dev.demon.base.check.impl.combat.velocity.VelocityA;
 import dev.demon.base.check.impl.combat.velocity.VelocityB;
 import dev.demon.base.check.impl.combat.velocity.VelocityC;
 import dev.demon.base.check.impl.misc.badpackets.*;
 import dev.demon.base.check.impl.misc.scaffold.*;
 import dev.demon.base.check.impl.misc.timer.TimerA;
-import dev.demon.base.check.impl.movement.fly.FlyA;
-import dev.demon.base.check.impl.movement.fly.FlyB;
-import dev.demon.base.check.impl.movement.fly.FlyC;
-import dev.demon.base.check.impl.movement.fly.FlyD;
+import dev.demon.base.check.impl.movement.fly.*;
 import dev.demon.base.check.impl.movement.speed.SpeedA;
 import dev.demon.base.check.impl.movement.speed.SpeedB;
 
