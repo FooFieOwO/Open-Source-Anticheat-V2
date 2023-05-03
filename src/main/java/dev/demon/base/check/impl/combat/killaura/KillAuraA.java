@@ -33,7 +33,8 @@ public class KillAuraA extends Check {
                 if (packet.getAction() == WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK) {
 
                     if (getUser().generalCancel()
-                            || getUser().getProcessorManager().getLagProcessor().getPacketDrop() > 50L) {
+                            || getUser().getProcessorManager().getActionProcessor().getServerTeleportTimer().hasNotPassed(5)
+                            || getUser().getProcessorManager().getLagProcessor().getPacketDrop() > 35L) {
                         this.threshold = 0;
                         return;
                     }
@@ -47,7 +48,7 @@ public class KillAuraA extends Check {
                                     "delta=" + delta);
                         }
                     } else {
-                        this.threshold -= Math.min(this.threshold, 2);
+                        this.threshold = 0;
                     }
                 }
                 break;

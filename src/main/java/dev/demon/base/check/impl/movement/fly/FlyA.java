@@ -19,6 +19,8 @@ public class FlyA extends Check {
 
     private boolean blockCheck;
 
+    //TODO: not make this check look like autism
+
     @Override
     public void onPacket(PacketEvent event) {
         if (event.isFlying()) {

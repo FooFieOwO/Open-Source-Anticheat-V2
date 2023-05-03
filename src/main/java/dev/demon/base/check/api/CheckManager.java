@@ -31,9 +31,10 @@ public class CheckManager {
                 new AimB(),
                 new AimC(),
                 new AimD(),
-                new AimE(),
 
                 new KillAuraA(),
+                new KillAuraB(),
+                new KillAuraC(),
 
                 new HitBoxA(),
 
@@ -46,6 +47,7 @@ public class CheckManager {
                 new FlyB(),
                 new FlyC(),
                 new FlyD(),
+                new FlyE(),
 
                 new SpeedA(),
                 new SpeedB(),

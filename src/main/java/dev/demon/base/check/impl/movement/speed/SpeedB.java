@@ -7,6 +7,7 @@ import dev.demon.base.check.api.CheckType;
 import dev.demon.base.check.api.Data;
 import dev.demon.base.event.PacketEvent;
 import dev.demon.util.location.CustomLocation;
+import org.bukkit.Bukkit;
 
 import java.util.Arrays;
 import java.util.List;
@@ -211,14 +212,16 @@ public class SpeedB extends Check {
                 }
             }
 
-            if (deltaXZ > 0.2 && lowestOffset >= 1e-6) {
-                if (++this.threshold > 5) {
+            if (lowestOffset == Double.MAX_VALUE) return;
+
+            if (deltaXZ > 0.2 && lowestOffset > 7.5e-4) {
+                if (++this.threshold > 4) {
                     this.fail("Invalid movement from the player",
                             "offset=" + lowestOffset,
                             "deltaXZ=" + deltaXZ);
                 }
             } else {
-                this.threshold -= Math.min(this.threshold, .00003);
+                this.threshold -= Math.min(this.threshold, .003);
             }
         }
     }
