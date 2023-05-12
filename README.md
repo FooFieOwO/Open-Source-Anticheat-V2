@@ -6,7 +6,7 @@ Main Authors:
 
 Contributors:
 - FooFieOwO (https://github.com/FooFieOwO)
-- notrhys (utils & timer a) (https://discord.gg/JGFRM2YBt2)
+- notrhys (utils & timer a) (https://github.com/notrhys)
 - funkemunky (atlas/dependency/utils) (https://github.com/funkemunky/)
 
 # Game Version Support
