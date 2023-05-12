@@ -43,3 +43,11 @@ If you decide to take any code from this anticheat for reselling purposes, all I
 The anticheat is currently in a developmental stage, and can be buggy at times. 
 
 Remember not all the code is finished, this github page for the anticheat may not be 100.0% correct, and may be slightly misinformative.
+
+# Looking for a full solution?
+
+Sparky Anticheat is now reopen for sale!
+
+Join the discord and found out more
+  
+https://discord.gg/JGFRM2YBt2
