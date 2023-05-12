@@ -6,6 +6,8 @@ Main Authors:
 
 Contributors:
 - FooFieOwO (https://github.com/FooFieOwO)
+- notrhys (utils & timer a) (https://discord.gg/JGFRM2YBt2)
+- funkemunky (atlas/dependency/utils) (https://github.com/funkemunky/)
 
 # Game Version Support
 This anticheat will only ever support 1.7 - 1.8.9 (mainly developed for 1.8)
